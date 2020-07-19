@@ -25,6 +25,7 @@ exports.postComment = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`post not found`, 404));
   }
   let data = {
+    ...req.body,
     message: req.body.comment,
     post: req.params.postId,
     user: req.user._id,

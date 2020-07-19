@@ -140,3 +140,33 @@ exports.editPost = asyncHandler(async (req, res, next) => {
     data: updatePost,
   });
 });
+
+// @desc                like post
+//@route                PUT /api/v1/posts/:id/like
+// @access              public route
+exports.likePost = asyncHandler(async (req, res, next) => {
+  let post = await Post.findById(req.params.id);
+  if (!post) {
+    return next(new ErrorResponse("post not found", 404));
+  }
+  let liked;
+  let tempLikes;
+  if (!post.likes.includes(req.user._id)) {
+    tempLikes = [...post.likes, req.user._id];
+    liked = true;
+  } else {
+    tempLikes = post.likes.filter(
+      (item) => item.toString() !== req.user._id.toString()
+    );
+    liked = false;
+  }
+
+  let update = await post.update({ likes: [...tempLikes] });
+  if (!update) {
+    return next(new ErrorResponse("Error occured while liking this post", 500));
+  }
+  res.json({
+    success: true,
+    liked,
+  });
+});

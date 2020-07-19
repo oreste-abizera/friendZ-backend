@@ -5,6 +5,7 @@ const {
   getPosts,
   getUserPosts,
   editPost,
+  likePost,
 } = require("../controllers/Posts");
 const { protect } = require("../middlewares/Auth");
 const router = express.Router();
@@ -17,4 +18,5 @@ router.use("/:postId/comments", CommentsRoute);
 router.route("/").post(protect, createPost).get(protect, getPosts);
 router.route("/:id").get(protect, getSinglePost).put(protect, editPost);
 router.route("/user/:id").get(protect, getUserPosts);
+router.route("/:id/like").put(protect, likePost);
 module.exports = router;
