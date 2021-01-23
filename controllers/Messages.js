@@ -94,6 +94,7 @@ exports.getChats = asyncHandler(async (req, res, next) => {
     const element = await User.findById(tempChats[i]);
     tempChats[i] = element;
   }
+  tempChats = tempChats.reverse();
 
   res.json({
     success: true,
